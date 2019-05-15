@@ -1,3 +1,22 @@
+/*
+   /\
+   \ \
+    \ \
+    / /
+   / /
+  _\ \_/\/\
+ /  *  \@@ =
+|       |Y/
+|       |~ The price of greatness is responsibility
+ \ /_\ /                        - Winston Churchill
+  \\ //     ___              _                   _
+   |||     / __\_ _ _ __ ___| |__   ___  ___  __| |
+  _|||_   / _\/ _` | '__/ __| '_ \ / _ \/ _ \/ _` |
+ ( / \ ) / / | (_| | |  \__ \ | | |  __/  __/ (_| |
+\^/^\^/^\\/   \__,_|_|  |___/_| |_|\___|\___|\__,_|
+ --------------------------------------------------
+*/
+
 // Day 0: Mean, Median, and Mode
 // day0.c
 // https://www.hackerrank.com/challenges/s10-basic-statistics/problem
@@ -67,5 +86,63 @@ int main() {
   }
   printf("%.1f\n", median);
 
+  // ----------------------------------------------------------------------
+  // now let's find mode.  It's the hardest part i guess since it will take
+  // some calculations of count the number of occurences for each item.
+  int *counts;
+  // allocate memorty
+  counts = malloc(n * sizeof(*counts));
+  // now
+  counts[0] = 1; // first item
+  for (int i = 1; i < n; i++) {
+    counts[i] = 1; // init
+    for (int k = i - 1; k >= 0; k--) {
+      if (numbers[i] == numbers[k]) {
+        counts[i] += 1;
+      }
+    }
+  }
+
+  int max = counts[0];
+  int loc = 0;
+  for (int i = 1; i < n; i++) {
+    if (counts[i] > max) {
+      // set the max and get location
+      max = counts[i];
+      loc = i;
+    }
+  }
+
+  // now that we have the location of most occurences, let's see how many
+  // numbers has the same repeat number:
+
+  int *modes;
+  modes = malloc((n / max) * sizeof(*modes)); // max count is n/max
+  modes[0] = numbers[loc];
+  int mode_counter = 1;
+
+  for (int i = 0; i < n; i++) {
+    if (i != loc && counts[i] == max) {
+      modes[mode_counter] = numbers[i];
+      mode_counter += 1;
+    }
+  }
+
+  int mode = modes[0];
+  // if the mode_counter is 1:
+  if (mode_counter > 1) {
+    // let's find minimum of all:
+    for (int i = 1; i < mode_counter; i++) {
+      if (modes[i] < mode) {
+        mode = modes[i];
+      }
+    }
+  }
+  printf("%d", mode);
+
+  // ----------------------------------------------------------------------------------
+  free(numbers);
+  free(counts);
+  free(modes);
   return EXIT_SUCCESS;
 }
