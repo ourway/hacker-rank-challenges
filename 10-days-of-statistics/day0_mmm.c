@@ -51,6 +51,7 @@ int main() {
     return EXIT_FAILURE;
   }
 
+  puts("please give me the size of your array:");
   // free memory:
   numbers = malloc(n * sizeof(*numbers));
   // let's read the array list from the rest
