@@ -83,7 +83,7 @@ int main() {
     median = (numbers[middle_element] + numbers[middle_element - 1]) / 2.0;
 
   } else {
-    median = numbers[middle_element];
+    median = (float)numbers[middle_element];
   }
   printf("%.1f\n", median);
 
